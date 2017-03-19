@@ -14,7 +14,11 @@
     "i18next": "^1.10.2",
     "morgan": "^1.6.1",
     "request": "^2.65.0",
-    "watson-developer-cloud": "^1.0.0-beta.1"
+    "watson-developer-cloud": "^1.0.0-beta.1",
+    "format-number": "^2.0.2",
+    "moment": "^2.17.1",
+    "parse": "^1.9.2",
+    "underscore": "^1.8.3"
   },
   "engines": {
     "node": ">=0.10"
