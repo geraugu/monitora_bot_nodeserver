@@ -1,0 +1,11 @@
+applications:
+- path: .
+  memory: 512M
+  instances: 1
+  domain: mybluemix.net
+  name: monitora_bot_nodeserver
+  host: monitorabotnodeserver
+  disk_quota: 1024M
+  services:
+  - Conversation-ae
+  - monitora_bot_nodeserver-personality_insights
