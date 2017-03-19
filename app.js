@@ -21,6 +21,14 @@ var express    = require('express'),
   watson       = require('watson-developer-cloud'),
   extend       = require('util')._extend,
   i18n         = require('i18next');
+var Parse = require('parse/node');
+const moment = require('moment');
+var bodyParser = require('body-parser')
+//var Monitora = require('./Monitora');
+
+
+Parse.initialize('JMzpiMhkL1z5hvuGzLhYPppNJPJpoaTAdIp3oNmh', 'mtyHx7hxS1zvPz5FnWq94w4GHzchvb44HJiZOZj2');
+Parse.serverURL = 'http://52.27.220.189/monitoraserver'
 
 //i18n settings
 require('./config/i18n')(app);
@@ -40,7 +48,12 @@ app.get('/', function(req, res) {
 });
 
 app.post('/api/profile', function(req, res, next) {
-  var parameters = extend(req.body, { acceptLanguage : i18n.lng() });
+  var parameters = extend(req.
+                          
+                          
+                          
+                          
+                          , { acceptLanguage : i18n.lng() });
 
   personalityInsights.profile(parameters, function(err, profile) {
     if (err)
