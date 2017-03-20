@@ -200,10 +200,10 @@ app.post('/messengerbot2/webhook', function (req, res) {
 app.post('/webhook/', function (req, res) {
 	var text = null;
 	
-    messaging_events = req.body.entry[0].messaging;
+   var messaging_events = req.body.entry[0].messaging;
 	for (i = 0; i < messaging_events.length; i++) {	
-        event = req.body.entry[0].messaging[i];
-        sender = event.sender.id;
+        var event = req.body.entry[0].messaging[i];
+        var sender = event.sender.id;
 
         if (event.message && event.message.text) {
 			text = event.message.text;
@@ -265,7 +265,7 @@ function callWatson(payload, sender) {
 
 function sendMessage(sender, text_) {
 	text_ = text_.substring(0, 319);
-	messageData = {	text: text_ };
+	var messageData = {	text: text_ };
 
     request({
         url: 'https://graph.facebook.com/v2.6/me/messages',
