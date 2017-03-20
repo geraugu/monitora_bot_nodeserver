@@ -47,7 +47,7 @@ var w_conversation = watson.conversation({
  });
 
 
-var workspace = process.env.WORKSPACE_ID || 'monitora_bot_nodeserver';
+var workspace = process.env.WORKSPACE_ID || '4eff24d4-2b2c-4996-ba67-6a2869e2392a';
 
 app.get('/webhook/', function (req, res) {
     if (req.query['hub.verify_token'] === 'tokenDeVerificacaoFacebook') {
