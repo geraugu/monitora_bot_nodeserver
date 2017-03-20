@@ -268,6 +268,7 @@ function callWatson(payload, sender) {
 }
 
 function sendMessage(sender, text_) {
+	console.log(text_);
 	text_ = text_.substring(0, 319);
 	var messageData = {	text: text_ };
 
