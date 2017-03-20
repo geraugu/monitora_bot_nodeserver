@@ -3,6 +3,7 @@
 
  var express    = require('express'),
    app          = express(),
+   request      = require('request'),  
    watson       = require('watson-developer-cloud'),
    extend       = require('util')._extend,
    Parse        = require('parse/node'),  
