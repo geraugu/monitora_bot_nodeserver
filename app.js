@@ -1,19 +1,41 @@
-var express = require('express');
-var Parse = require('parse/node');
+
+use strict';
+
+ var express    = require('express'),
+   app          = express(),
+   watson       = require('watson-developer-cloud'),
+   extend       = require('util')._extend,
+   Parse        = require('parse/node'),  
+   bodyParser   = require('body-parser'),
+   Monitora     = require('./Monitora'),
+   i18n         = require('i18next');
+ 
+
 const moment = require('moment');
-var bodyParser = require('body-parser')
-var Monitora = require('./Monitora');
+
 
 
 Parse.initialize('JMzpiMhkL1z5hvuGzLhYPppNJPJpoaTAdIp3oNmh', 'mtyHx7hxS1zvPz5FnWq94w4GHzchvb44HJiZOZj2');
 Parse.serverURL = 'http://52.27.220.189/monitoraserver'
 
-var app = express();
-// parse application/x-www-form-urlencoded
-app.use(bodyParser.urlencoded({ extended: false }))
+//i18n settings
+ require('./config/i18n')(app);
+ 
+ // Bootstrap application settings
+ require('./config/express')(app);
+ 
+ // Create the service wrapper
+ var personalityInsights = watson.personality_insights({
+   version: 'v2',
+   username: '<username>',
+   password: '<password>'
+ });
+ 
+ app.get('/', function(req, res) {
+   res.render('index', { ct: req._csrfToken });
+ });
 
-// parse application/json
-app.use(bodyParser.json())
+
 
 
 app.post('/messengerbot2/webhook', function (req, res) {
@@ -166,7 +188,11 @@ function IsJsonString(str) {
     return true;
 }
 
-app.listen(3000, function () {
-  console.log('Bot listen to 3000!');
-});
+// error-handler settings
+ require('./config/error-handler')(app);
+ 
+ var port = process.env.PORT || process.env.VCAP_APP_PORT || 3000;
+ app.listen(port);
+ console.log('listening at:', port);
+
 
