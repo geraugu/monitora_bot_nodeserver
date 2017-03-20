@@ -14,6 +14,7 @@
 const moment = require('moment');
 
 app.use(bodyParser.urlencoded({ extended: false }))
+app.use(bodyParser.json())
 
 Parse.initialize('JMzpiMhkL1z5hvuGzLhYPppNJPJpoaTAdIp3oNmh', 'mtyHx7hxS1zvPz5FnWq94w4GHzchvb44HJiZOZj2');
 Parse.serverURL = 'http://52.27.220.189/monitoraserver'
@@ -23,6 +24,15 @@ Parse.serverURL = 'http://52.27.220.189/monitoraserver'
  
  // Bootstrap application settings
  require('./config/express')(app);
+
+var conversation_id = "";
+var w_conversation = watson.conversation({
+    url: 'https://gateway.watsonplatform.net/conversation/api',
+    username: '<username>',
+    password: '<password>'
+    version: 'v1',
+    version_date: '2016-07-11'
+});
  
  // Create the service wrapper
  var personalityInsights = watson.personality_insights({
@@ -35,6 +45,15 @@ Parse.serverURL = 'http://52.27.220.189/monitoraserver'
    res.render('index', { ct: req._csrfToken });
  });
 
+
+var workspace = process.env.WORKSPACE_ID || 'workspaceId';
+
+app.get('/webhook/', function (req, res) {
+    if (req.query['hub.verify_token'] === 'tokenDeVerificacaoFacebook') {
+        res.send(req.query['hub.challenge']);
+    }
+    res.send('Erro de validação no token.');
+});
 
 
 
@@ -176,9 +195,46 @@ app.post('/messengerbot2/webhook', function (req, res) {
 	*/
 //console.log(data.result.fulfillment
 	
-	
-	
 })
+
+app.post('/webhook/', function (req, res) {
+	var text = null;
+	
+    messaging_events = req.body.entry[0].messaging;
+	for (i = 0; i < messaging_events.length; i++) {	
+        event = req.body.entry[0].messaging[i];
+        sender = event.sender.id;
+
+        if (event.message && event.message.text) {
+			text = event.message.text;
+		}else if (event.postback && !text) {
+			text = event.postback.payload;
+		}else{
+			break;
+		}
+		
+		var params = {
+			input: text,
+			context: {"conversation_id": conversation_id}
+		}
+
+		var payload = {
+			workspace_id: workspace
+		};
+
+		if (params) {
+			if (params.input) {
+				params.input = params.input.replace("\n","");
+				payload.input = { "text": params.input };
+			}
+			if (params.context) {
+				payload.context = params.context;
+			}
+		}
+		callWatson(payload, sender);
+    }
+    res.sendStatus(200);
+});
 
 function IsJsonString(str) {
     try {
@@ -188,6 +244,47 @@ function IsJsonString(str) {
     }
     return true;
 }
+
+function callWatson(payload, sender) {
+	w_conversation.message(payload, function (err, convResults) {
+        if (err) {
+            return responseToRequest.send("Erro.");
+        }
+		
+		if(convResults.context != null)
+    	   conversation_id = convResults.context.conversation_id;
+        if(convResults != null && convResults.output != null){
+			var i = 0;
+			while(i < convResults.output.text.length){
+				sendMessage(sender, convResults.output.text[i++]);
+			}
+		}
+            
+    });
+}
+
+function sendMessage(sender, text_) {
+	text_ = text_.substring(0, 319);
+	messageData = {	text: text_ };
+
+    request({
+        url: 'https://graph.facebook.com/v2.6/me/messages',
+        qs: { access_token: token },
+        method: 'POST',
+        json: {
+            recipient: { id: sender },
+            message: messageData,
+        }
+    }, function (error, response, body) {
+        if (error) {
+            console.log('Error sending message: ', error);
+        } else if (response.body.error) {
+            console.log('Error: ', response.body.error);
+        }
+    });
+};
+
+var token = "EAAIQKYAU01QBAH5RbI1GjCv0LZAotyh55kV0UbPN58uUIZBh3WUqWuTjpbvU7x4oNg1OClFEGqghFhcB7wtYGIfsZARZBKMhb99mAzuNKZCjoJZAwBbji46gaEKFcgc7SCNduXwo9h10WE1yqgZCbZAHgsOovEQ8RSS4dsLw4AsKugZDZD";
 
 // error-handler settings
  require('./config/error-handler')(app);
