@@ -47,7 +47,7 @@ var w_conversation = watson.conversation({
  });
 
 
-var workspace = '65f1cd4d-e113-44ed-9f33-36b1f3027857';
+var workspace = '0dee4b6e-731f-4c67-b092-857514f0315f';
 
 app.get('/webhook/', function (req, res) {
     if (req.query['hub.verify_token'] === 'tokenDeVerificacaoFacebook') {
