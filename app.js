@@ -13,7 +13,7 @@
 
 const moment = require('moment');
 
-
+app.use(bodyParser.urlencoded({ extended: false }))
 
 Parse.initialize('JMzpiMhkL1z5hvuGzLhYPppNJPJpoaTAdIp3oNmh', 'mtyHx7hxS1zvPz5FnWq94w4GHzchvb44HJiZOZj2');
 Parse.serverURL = 'http://52.27.220.189/monitoraserver'
@@ -41,6 +41,7 @@ Parse.serverURL = 'http://52.27.220.189/monitoraserver'
 app.post('/messengerbot2/webhook', function (req, res) {
 	res.setHeader('Content-type', 'application/json');	
 	var data = req.body;
+	console.log(data)
 	var sender = data.originalRequest.data.sender.id;
 	var metadata = data.result.metadata;
 	var mensagem = data.result.resolvedQuery;
