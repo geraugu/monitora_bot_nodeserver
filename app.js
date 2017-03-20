@@ -29,7 +29,7 @@ var conversation_id = "";
 var w_conversation = watson.conversation({
     url: 'https://gateway.watsonplatform.net/conversation/api',
     username: '<username>',
-    password: '<password>'
+    password: '<password>',
     version: 'v1',
     version_date: '2016-07-11'
 });
