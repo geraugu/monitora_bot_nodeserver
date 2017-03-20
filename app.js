@@ -29,8 +29,8 @@ Parse.serverURL = 'http://52.27.220.189/monitoraserver'
 var conversation_id = "";
 var w_conversation = watson.conversation({
     url: 'https://gateway.watsonplatform.net/conversation/api',
-    username: '<username>',
-    password: '<password>',
+    username: '9e5641e6-e063-47b0-a170-65656b3ed444',
+    password: 'TlKATc1MiTK1',
     version: 'v1',
     version_date: '2016-07-11'
 });
@@ -47,7 +47,7 @@ var w_conversation = watson.conversation({
  });
 
 
-var workspace = process.env.WORKSPACE_ID || 'workspaceId';
+var workspace = process.env.WORKSPACE_ID || 'Conversation-ae';
 
 app.get('/webhook/', function (req, res) {
     if (req.query['hub.verify_token'] === 'tokenDeVerificacaoFacebook') {
