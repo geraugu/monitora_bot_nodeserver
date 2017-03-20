@@ -249,7 +249,10 @@ function IsJsonString(str) {
 function callWatson(payload, sender) {
 	w_conversation.message(payload, function (err, convResults) {
         if (err) {
-            return responseToRequest.send("Erro.");
+		console.log(err)
+		console.log(convResults)
+		return;
+            //return responseToRequest.send("Erro.");
         }
 		
 		if(convResults.context != null)
