@@ -254,7 +254,7 @@ function callWatson(payload, sender) {
 		return;
             //return responseToRequest.send("Erro.");
         }
-		
+		console.log(convResults);
 		if(convResults.context != null)
     	   conversation_id = convResults.context.conversation_id;
         if(convResults != null && convResults.output != null){
@@ -289,7 +289,7 @@ function sendMessage(sender, text_) {
     });
 };
 
-var token = "EAAIQKYAU01QBAH5RbI1GjCv0LZAotyh55kV0UbPN58uUIZBh3WUqWuTjpbvU7x4oNg1OClFEGqghFhcB7wtYGIfsZARZBKMhb99mAzuNKZCjoJZAwBbji46gaEKFcgc7SCNduXwo9h10WE1yqgZCbZAHgsOovEQ8RSS4dsLw4AsKugZDZD";
+var token = "EAAFxqbRg5UEBAOFTFOIMzjwtB5JdcJgaYorYrsP0ZART9D3ZBV6ZCfgsADYl6PeNB4hOXWAMi3Kctis3zVRjwjuZBlBkHDm9YjCepRBlyLgaJwR9LJiZAwBTVZBwNBZCmH8oveFDJ3Y7yGuKsQ9HFVdwPl8oa3EfbJUZCALAEja89AZDZD";
 
 // error-handler settings
  require('./config/error-handler')(app);
