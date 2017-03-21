@@ -208,6 +208,27 @@ app.post('/webhook/', function (req, res) {
 
         if (event.message && event.message.text) {
 			text = event.message.text;
+		Monitora.getPolitico(text, function(ret){
+			var retorno = {}
+				if(ret.success){
+					retorno.data ={
+						"facebook" : {
+							"attachment" : {
+								"type" : "template",
+								"payload" : {
+									"template_type" : "generic",
+									"elements" : ret.cards
+								}
+							}
+						}
+					}
+				}else{
+					//se nao encontrar, enviar o fulfillment
+					retorno.speech='nao encontrei';				
+						
+				}		
+				console.log(retorno);
+			});		
 		}else if (event.postback && !text) {
 			text = event.postback.payload;
 		}else{
